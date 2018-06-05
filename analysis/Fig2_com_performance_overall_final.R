@@ -38,7 +38,7 @@ cont_sim <- performance(bbmsy_sim, method_abbrevs)
 
 plot_perf <- function(dat, y = "rank", ylim = c(0, 1), xlim = c(0, 1), b_range = c(-1, 1)) {
   ggplot(dat, aes_string("inaccuracy", y = y, fill = "bias")) +
-    geom_point(pch = 21, size = 3) +
+    geom_point(pch = 21, size = 3.3) +
     scale_fill_gradient2(
       low = muted("red"),
       mid = "white",
@@ -46,7 +46,7 @@ plot_perf <- function(dat, y = "rank", ylim = c(0, 1), xlim = c(0, 1), b_range =
     ggsidekick::theme_sleek() +
     coord_cartesian(ylim = ylim, expand = TRUE, xlim = xlim) +
     geom_text_repel(aes(label = method),
-      size = 2.8, colour = "grey30",
+      size = 2.9, colour = "grey30",
       point.padding = unit(0.2, "lines"), max.iter = 6e3, segment.size = 0.3) +
     labs(fill = "Bias", x = "Inaccuracy (MAPE)", y = "Rank-order correlation")
 }
@@ -54,9 +54,10 @@ b_range <- range(c(cont_ram$bias, cont_sim$bias))
 ylim <- range(c(cont_ram$rank, cont_sim$rank))
 xlim <- range(c(cont_ram$inaccuracy, cont_sim$inaccuracy))
 g2 <- plot_perf(cont_ram, b_range = b_range, xlim = xlim, ylim = ylim) +
-  ylab("") + theme(legend.position = c(0.15, 0.75))
+  ylab("") + theme(legend.position = c(0.15, 0.70)) +
+  ggtitle("(b) RAMLDB; continuous performance")
 g1 <- plot_perf(cont_sim, b_range = b_range, xlim = xlim, ylim = ylim) +
-  guides(fill = FALSE)
+  guides(fill = FALSE) + ggtitle("(a) Simulated; continuous performance")
 
 
 # Categorical performance
@@ -90,34 +91,38 @@ plot_perf_catg <- function(dat, ylim = c(0, 1), xlim = c(0, 1)) {
 
 ylim <- range(c(catg_ram$kappa, catg_sim$kappa))
 xlim <- range(c(catg_ram$accuracy, catg_sim$accuracy))
-lab_x = xlim[2]
+lab_x = xlim[2] + 0.01
 g4 <- catg_ram %>%
   rename(inaccuracy = accuracy) %>%
   mutate(bias = 1) %>%
   plot_perf(y = "kappa", xlim = xlim, ylim = ylim) + ylab("Cohen's kappa") +
-  scale_fill_continuous(low = "grey50", high = "grey50") +
-  guides(fill = FALSE) + ylab("") +
+  scale_fill_continuous(low = "grey65", high = "grey65") +
+  guides(fill = FALSE) + ylab("") + xlab("Accuracy") +
   geom_hline(yintercept = 0.4, col = "grey70", lty = 2) +
   geom_hline(yintercept = 0.2, col = "grey70", lty = 2) +
   annotate("text", x = lab_x, y = 0.45, label = "good", hjust = 1, col = "grey80") +
   annotate("text", x = lab_x, y = 0.25, label = "fair", hjust = 1, col = "grey80") +
-  annotate("text", x = lab_x, y = 0.15, label = "poor", hjust = 1, col = "grey80")
+  annotate("text", x = lab_x, y = 0.15, label = "poor", hjust = 1, col = "grey80") +
+  ggtitle("(d) RAMLDB; categorical performance")
 
 g3 <- catg_sim %>%
   rename(inaccuracy = accuracy) %>%
   mutate(bias = 1) %>%
   plot_perf(y = "kappa", xlim = xlim, ylim = ylim) + ylab("Cohen's kappa") +
-  scale_fill_continuous(low = "grey50", high = "grey50") +
-  guides(fill = FALSE) +
+  scale_fill_continuous(low = "grey65", high = "grey65") +
+  guides(fill = FALSE) + xlab("Accuracy") +
   geom_hline(yintercept = 0.4, col = "grey70", lty = 2) +
   geom_hline(yintercept = 0.2, col = "grey70", lty = 2) +
   annotate("text", x = lab_x, y = 0.45, label = "good", hjust = 1, col = "grey80") +
   annotate("text", x = lab_x, y = 0.25, label = "fair", hjust = 1, col = "grey80") +
-  annotate("text", x = lab_x, y = 0.15, label = "poor", hjust = 1, col = "grey80")
+  annotate("text", x = lab_x, y = 0.15, label = "poor", hjust = 1, col = "grey80") +
+  ggtitle("(c) Simulated; categorical performance")
 
 
-pdf(paste0(plotdir, "/fig2.pdf"), width = 7, height = 6)
-print(cowplot::plot_grid(g1, g2, g3, g4, nrow = 2))
+pdf(paste0(plotdir, "/fig2.pdf"), width = 6.75, height = 5.9)
+print(cowplot::plot_grid(g1, g2, g3, g4, nrow = 2,
+  # labels = c("(a)", "(b)", "(c)", "(d)"),
+  label_x = 0.15, label_y = 0.88, label_size = 10))
 dev.off()
 
 # # Plot data

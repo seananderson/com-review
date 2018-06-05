@@ -12,6 +12,8 @@ library(ggplot2)
 library(ggrepel)
 library(scales)
 
+source("analysis/plot_perf.R")
+
 # Define directories
 # datadir <- "~/Dropbox/Chris/Rutgers/projects/fao_dlm/paper/data"
 # plotdir <- "~/Dropbox/Chris/Rutgers/projects/fao_dlm/paper/figures"
@@ -36,20 +38,6 @@ bbmsy_sim <- na.omit(sim[,bbmsy_cols])
 cont_ram <- performance(bbmsy_ram, method_abbrevs)
 cont_sim <- performance(bbmsy_sim, method_abbrevs)
 
-plot_perf <- function(dat, y = "rank", ylim = c(0, 1), xlim = c(0, 1), b_range = c(-1, 1)) {
-  ggplot(dat, aes_string("inaccuracy", y = y, fill = "bias")) +
-    geom_point(pch = 21, size = 3.3) +
-    scale_fill_gradient2(
-      low = muted("red"),
-      mid = "white",
-      high = muted("blue"), midpoint = 0, limits = b_range) +
-    ggsidekick::theme_sleek() +
-    coord_cartesian(ylim = ylim, expand = TRUE, xlim = xlim) +
-    geom_text_repel(aes(label = method),
-      size = 2.9, colour = "grey30",
-      point.padding = unit(0.2, "lines"), max.iter = 6e3, segment.size = 0.3) +
-    labs(fill = "Bias", x = "Inaccuracy (MAPE)", y = "Rank-order correlation")
-}
 b_range <- range(c(cont_ram$bias, cont_sim$bias))
 ylim <- range(c(cont_ram$rank, cont_sim$rank))
 xlim <- range(c(cont_ram$inaccuracy, cont_sim$inaccuracy))
@@ -77,17 +65,6 @@ status_ram <- na.omit(ram[,status_cols])
 status_sim <- na.omit(sim[,status_cols1])
 catg_ram <- performance(status_ram, method_abbrevs)
 catg_sim <- performance(status_sim, method_abbrevs1)
-
-plot_perf_catg <- function(dat, ylim = c(0, 1), xlim = c(0, 1)) {
-  ggplot(dat, aes(inaccuracy, rank, fill = bias)) +
-    geom_point(pch = 21, size = 3) +
-    ggsidekick::theme_sleek() +
-    coord_cartesian(ylim = ylim, expand = TRUE, xlim = xlim) +
-    geom_text_repel(aes(label = method),
-      size = 2.8, colour = "grey30",
-      point.padding = unit(0.2, "lines"), max.iter = 6e3, segment.size = 0.3) +
-    labs(fill = "Bias", x = "Inaccuracy (MAPE)", y = "Cohen's kappa")
-}
 
 ylim <- range(c(catg_ram$kappa, catg_sim$kappa))
 xlim <- range(c(catg_ram$accuracy, catg_sim$accuracy))

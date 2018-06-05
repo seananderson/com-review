@@ -36,7 +36,7 @@ method_abbrevs <- c("Super", "COM-SIR", "cMSY-17", "cMSY-13",
 
 # Exploitation dynamics scenarios
 eds <- c("ED0", "ED0.6", "OW", "RC")
-ed.names <- c("Constant", "Biomass-coupled", "Increasing", "Roller coaster")
+ed.names <- c("(a) Constant", "(b) Biomass-coupled", "(c) Increasing", "(d) Roller coaster")
 
 # Empty dataframe
 ed.data <- data.frame(scenario=sort(rep(eds, length(method_abbrevs))),
@@ -81,13 +81,14 @@ b_range <- range(ed.data$bias)
 ylim <- range(ed.data$ranking)
 xlim <- range(ed.data$accuracy)
 
-# filter(ed.data, scenario == "ED0") %>%
-  ed.data %>%
+labs <- tibble(scenario = eds, scenario_clean = ed.names)
+
+left_join(ed.data, labs) %>%
   rename(inaccuracy = accuracy) %>%
   plot_perf(b_range = b_range, xlim = xlim, ylim = ylim, y = "ranking") +
-  guides(fill = FALSE) +#theme(legend.position = c(0.15, 0.70)) +
   ggtitle("") +
-  facet_wrap(~scenario)
+  facet_wrap(~scenario_clean) +
+  theme(legend.position = c(0.9, 0.75))
 
 # # Plot data
 # ################################################################################

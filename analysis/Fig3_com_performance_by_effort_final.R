@@ -85,13 +85,15 @@ labs <- tibble(scenario = eds, scenario_clean = ed.names)
 
 g <- left_join(ed.data, labs) %>%
   rename(inaccuracy = accuracy) %>%
-  plot_perf(b_range = b_range, xlim = xlim, ylim = ylim, y = "ranking") +
+  plot_perf(b_range = b_range, xlim = xlim, ylim = ylim, y = "ranking",
+    point.padding = grid::unit(0.41, "lines"),
+    min.segment.length = 0.3, force = 4) +
   facet_wrap(~scenario_clean) +
   theme(legend.position = c(0.44, 0.86)) +
   theme(strip.text = element_text(angle = 0, hjust = 0, size = rel(1)))
 # g
 
-ggsave(paste0(plotdir, "/fig3.png"), width = 6.75, height = 5.9, dpi = 200)
+ggsave(paste0(plotdir, "/fig3.pdf"), width = 6.75, height = 5.9)
 
 # # Plot data
 # ################################################################################

@@ -99,7 +99,7 @@ g3 <- catg_sim %>%
 g <- cowplot::plot_grid(g1, g2, g3, g4, nrow = 2,
   # labels = c("(a)", "(b)", "(c)", "(d)"),
   label_x = 0.15, label_y = 0.88, label_size = 10)
-ggsave(paste0(plotdir, "/fig2.png"), width = 6.75, height = 5.9, dpi = 200)
+ggsave(paste0(plotdir, "/fig2.pdf"), width = 6.75, height = 5.9)
 
 # # Plot data
 # ################################################################################

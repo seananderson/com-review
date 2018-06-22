@@ -74,8 +74,8 @@ preds.ram <- preds.ram.full[nconverge.ram==8,]
 preds.sim <- preds.sim.full[nconverge.sim==8,]
 
 # Setup figure
-figname <- "SFig1_com_performance_scatterplots.png"
-png(paste(plotdir, figname, sep="/"), width=6, height=6, units="in", res=300)
+figname <- "SFig1_com_performance_scatterplots.pdf"
+pdf(paste(plotdir, figname, sep="/"), width=6, height=6)
 gap.ht <- 0.04 # percentage of figure height occupied by gap
 reg.ht <- (1-gap.ht)/4
 layout(matrix(data=c(1,3,5,7,

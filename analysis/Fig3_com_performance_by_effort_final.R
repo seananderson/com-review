@@ -83,12 +83,15 @@ xlim <- range(ed.data$accuracy)
 
 labs <- tibble(scenario = eds, scenario_clean = ed.names)
 
-left_join(ed.data, labs) %>%
+g <- left_join(ed.data, labs) %>%
   rename(inaccuracy = accuracy) %>%
   plot_perf(b_range = b_range, xlim = xlim, ylim = ylim, y = "ranking") +
-  ggtitle("") +
   facet_wrap(~scenario_clean) +
-  theme(legend.position = c(0.9, 0.75))
+  theme(legend.position = c(0.44, 0.86)) +
+  theme(strip.text = element_text(angle = 0, hjust = 0, size = rel(1)))
+# g
+
+ggsave(paste0(plotdir, "/fig3.png"), width = 6.75, height = 5.9, dpi = 200)
 
 # # Plot data
 # ################################################################################

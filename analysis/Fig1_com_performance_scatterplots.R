@@ -74,7 +74,7 @@ preds.ram <- preds.ram.full[nconverge.ram==8,]
 preds.sim <- preds.sim.full[nconverge.sim==8,]
 
 # Setup figure
-figname <- "SFig1_com_performance_scatterplots.pdf"
+figname <- "fig1.pdf"
 pdf(paste(plotdir, figname, sep="/"), width=6, height=6)
 gap.ht <- 0.04 # percentage of figure height occupied by gap
 reg.ht <- (1-gap.ht)/4
@@ -127,7 +127,7 @@ for(i in 1:length(bbmsy_cols2)){
   # Plot simstock performance
   xaxt <- T
   plot_data(obs=preds.sim$true_bbmsy, ests=preds.sim[,bbmsy_col], xaxt=xaxt, yaxt=yaxt)
-  if(i==1){mtext("Simulated\nstocks", side=3, adj=0.05, line=-2, cex=0.7, font=2)}
+  if(i==1){mtext("Simulated\nstocks", side=3, adj=0.05, line=-2, cex=0.6, font=2)}
 
 }
 
